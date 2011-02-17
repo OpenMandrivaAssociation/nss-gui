@@ -1,16 +1,18 @@
 Summary:	GUI to manage contents of an NSS database
 Name:		nss-gui
-Version:	0.3.3
+Version:	0.3.9
 Release:	%mkrel 1
 License:	MPLv1.1 or GPLv2+ or LGPLv2+
 Group:		File tools
 URL:		https://fedorahosted.org/nss-gui/
 Source0:	https://fedorahosted.org/released/nss-gui/%{name}-%{version}.tar.bz2
-Source1:	nss-16x16.png
-Source2:	nss-32x32.png
-Source3:	nss-48x48.png
+Source1:	nss-gui-16x16.png
+Source2:	nss-gui-32x32.png
+Source3:	nss-gui-48x48.png
 Requires:	xulrunner
 BuildRequires:	boost-devel
+BuildRequires:	asciidoc
+BuildRequires:	xsltproc
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -21,22 +23,31 @@ Services) database, including registered CRLs and registered security devices
 %prep
 %setup -q
 
-cp %{SOURCE1} nss-16x16.png
-cp %{SOURCE2} nss-32x32.png
-cp %{SOURCE3} nss-48x48.png
+cp %{SOURCE1} nss-gui-16x16.png
+cp %{SOURCE2} nss-gui-32x32.png
+cp %{SOURCE3} nss-gui-48x48.png
+
+# mdv bork
+if [ -f /etc/asciidoc/docbook-xsl/manpage.xsl ]; then
+    perl -pi -e "s|/usr/share/asciidoc|/etc/asciidoc|g" wrapnssgui/Makefile
+fi
 
 %build
 cd wrapnssgui
-g++ %{optflags} wrapnssgui.cpp -o wrapnssgui %{ldflags} -lboost_program_options
+make OPTFLAGS="%{optflags}"
 cd ..
 
 %install
 rm -rf %{buildroot}
 
-install -d %{buildroot}/%{_bindir}
-install -d %{buildroot}/%{_datadir}/nss-gui
-install -m0755 wrapnssgui/wrapnssgui %{buildroot}/%{_bindir}/nss-gui
+install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_datadir}/nss-gui
+install -d %{buildroot}%{_mandir}/man1
+
+install -m0755 wrapnssgui/nss-gui %{buildroot}/%{_bindir}/nss-gui
 cp -axiv xrnssgui/* %{buildroot}/%{_datadir}/nss-gui
+
+install -m0644 wrapnssgui/nss-gui.1 %{buildroot}%{_mandir}/man1/
 
 install -d %{buildroot}%{_datadir}/applications
 rm -f %{buildroot}%{_datadir}/applications/MySQLWorkbench.desktop
@@ -54,9 +65,9 @@ EOF
 install -d %{buildroot}%{_miconsdir}
 install -d %{buildroot}%{_iconsdir}
 install -d %{buildroot}%{_liconsdir}
-install -m0644 nss-16x16.png %{buildroot}%{_miconsdir}/nss-gui.png
-install -m0644 nss-32x32.png %{buildroot}%{_iconsdir}/nss-gui.png
-install -m0644 nss-48x48.png %{buildroot}%{_liconsdir}/nss-gui.png
+install -m0644 nss-gui-16x16.png %{buildroot}%{_miconsdir}/nss-gui.png
+install -m0644 nss-gui-32x32.png %{buildroot}%{_iconsdir}/nss-gui.png
+install -m0644 nss-gui-48x48.png %{buildroot}%{_liconsdir}/nss-gui.png
 
 %if %mdkversion < 200900
 %post
@@ -83,8 +94,9 @@ rm -rf %{buildroot}
 %{_datadir}/nss-gui/chrome/content/main.xul
 %{_datadir}/nss-gui/chrome/content/crlManagerModify.xul
 %{_datadir}/nss-gui/chrome/content/main.js
+%{_datadir}/nss-gui/chrome.manifest
 %attr(0644,root,root) %{_datadir}/applications/*.desktop
 %attr(0644,root,root) %{_iconsdir}/*.png
 %attr(0644,root,root) %{_liconsdir}/*.png
 %attr(0644,root,root) %{_miconsdir}/*.png
-
+%{_mandir}/man1/nss-gui.1*
