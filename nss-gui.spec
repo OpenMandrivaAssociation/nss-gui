@@ -13,6 +13,7 @@ Requires:	xulrunner
 BuildRequires:	boost-devel
 BuildRequires:	asciidoc
 BuildRequires:	xsltproc
+BuildRequires:	docbook-style-xsl
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
