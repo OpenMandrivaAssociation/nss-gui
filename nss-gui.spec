@@ -1,7 +1,7 @@
 Summary:	GUI to manage contents of an NSS database
 Name:		nss-gui
-Version:	0.3.9
-Release:	%mkrel 2
+Version:	0.3.10
+Release:	1
 License:	MPLv1.1 or GPLv2+ or LGPLv2+
 Group:		File tools
 URL:		https://fedorahosted.org/nss-gui/
@@ -9,12 +9,12 @@ Source0:	https://fedorahosted.org/released/nss-gui/%{name}-%{version}.tar.bz2
 Source1:	nss-gui-16x16.png
 Source2:	nss-gui-32x32.png
 Source3:	nss-gui-48x48.png
+Patch0:		nss-gui-compatibility.patch
 Requires:	xulrunner
 BuildRequires:	boost-devel
 BuildRequires:	asciidoc
 BuildRequires:	xsltproc
 BuildRequires:	docbook-style-xsl
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Graphical user interface to manage the content of an NSS (Network Security
@@ -22,7 +22,9 @@ Services) database, including registered CRLs and registered security devices
 (PKCS#11). Based on Mozilla code.
 
 %prep
+
 %setup -q
+%patch0 -p1
 
 cp %{SOURCE1} nss-gui-16x16.png
 cp %{SOURCE2} nss-gui-32x32.png
@@ -39,7 +41,6 @@ make OPTFLAGS="%{optflags}"
 cd ..
 
 %install
-rm -rf %{buildroot}
 
 install -d %{buildroot}%{_bindir}
 install -d %{buildroot}%{_datadir}/nss-gui
@@ -70,21 +71,7 @@ install -m0644 nss-gui-16x16.png %{buildroot}%{_miconsdir}/nss-gui.png
 install -m0644 nss-gui-32x32.png %{buildroot}%{_iconsdir}/nss-gui.png
 install -m0644 nss-gui-48x48.png %{buildroot}%{_liconsdir}/nss-gui.png
 
-%if %mdkversion < 200900
-%post
-%update_menus
-%endif
-
-%if %mdkversion < 200900
-%postun
-%clean_menus
-%endif
-
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %{_bindir}/nss-gui
 %{_datadir}/nss-gui/xrnssgui.ini
 %{_datadir}/nss-gui/defaults/preferences/prefs.js
