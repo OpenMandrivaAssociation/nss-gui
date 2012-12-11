@@ -88,3 +88,24 @@ install -m0644 nss-gui-48x48.png %{buildroot}%{_liconsdir}/nss-gui.png
 %attr(0644,root,root) %{_liconsdir}/*.png
 %attr(0644,root,root) %{_miconsdir}/*.png
 %{_mandir}/man1/nss-gui.1*
+
+
+%changelog
+* Fri Jul 06 2012 Oden Eriksson <oeriksson@mandriva.com> 0.3.10-1
++ Revision: 808280
+- synd with fedora
+
+* Wed Mar 16 2011 Funda Wang <fwang@mandriva.org> 0.3.9-2
++ Revision: 645381
+- rebuild for new boost
+
+* Thu Feb 17 2011 Oden Eriksson <oeriksson@mandriva.com> 0.3.9-1
++ Revision: 638153
+- fix deps on docbook-style-xsl (let's just hope...)
+- 0.3.9
+- sync slightly with fedora
+
+* Sun Sep 05 2010 Oden Eriksson <oeriksson@mandriva.com> 0.3.3-1mdv2011.0
++ Revision: 576103
+- import nss-gui
+
