@@ -1,7 +1,7 @@
 Summary:	GUI to manage contents of an NSS database
 Name:		nss-gui
 Version:	0.3.10
-Release:	1
+Release:	2
 License:	MPLv1.1 or GPLv2+ or LGPLv2+
 Group:		File tools
 URL:		https://fedorahosted.org/nss-gui/
