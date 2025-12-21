@@ -11,6 +11,7 @@ Source2:	nss-gui-32x32.png
 Source3:	nss-gui-48x48.png
 Patch0:		nss-gui-compatibility.patch
 Requires:	xulrunner
+BuildRequires:	make
 BuildRequires:	boost-devel
 BuildRequires:	asciidoc
 BuildRequires:	xsltproc
